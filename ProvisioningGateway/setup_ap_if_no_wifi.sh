@@ -1,5 +1,31 @@
 #!/bin/bash
-#https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection
+
+#https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
+# kill all fake dns server to let the app can pull the node_modules package
+echo "kill all fake dns server to let the app can pull the node_modules package"
+sudo killall dnsmasq
+sleep 2
+
+setup_path="$(pwd)"
+
+
+echo "==========SetupCaptivePortal Flashpage==========="
+echo "copy CaptivePortal and jump to /home/pi/CaptivePortal to setup module"
+cp -rf CaptivePortal/ /home/pi/
+cd /home/pi/CaptivePortal
+npm install
+
+
+echo "=========Go back to current setup path to continue setup==============="
+echo $setup_path
+cd $setup_path
+# copy excuted file to target so that service can start
+sudo cp ./config_ap/captiveportal.sh /usr/bin/captiveportal
+sudo chmod +x /usr/bin/captiveportal
+
+sudo cp ./config_ap/captiveportal.service /etc/systemd/system/captiveportal.service
+sudo systemctl enable captiveportal.service
+
 echo "==========start to setup wifi hotspot when no internet connection==========="
 sudo apt-get update
 sudo apt-get upgrade
@@ -30,7 +56,7 @@ sudo cp ./config_ap/dhcpcd.conf /etc/dhcpcd.conf
 #DNSmasq configuration
 #Next dnsmasq needs to be configured to allow the Rpi to act as a router 
 #and issue ip addresses. Open the dnsmasq.conf file with
-sudo cp ./config_ap/dnsmasq.conf /etc/dnsmasq.conf
+sudo cp -f ./config_ap/dnsmasq.conf /etc/dnsmasq.conf
 
 
 # Creating the autohotspot script (The service will start from this point at startup)
@@ -45,6 +71,7 @@ sudo systemctl enable autohotspot.service
 
 echo "==========finish setup wifi hotspot when no internet connection==========="
 
+#sudo iptables -t nat -A PREROUTING -d 0/0 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.1:80
 
 
 

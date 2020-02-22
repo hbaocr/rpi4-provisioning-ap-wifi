@@ -35,22 +35,27 @@ ssidsmac=("${ssids[@]}" "${mac[@]}") #combines ssid and MAC for checking
 createAdHocNetwork()
 {
     echo "Creating Hotspot"
-    ip link set dev "$wifidev" down
-    ip a add 10.0.0.1/24 brd + dev "$wifidev"
-    ip link set dev "$wifidev" up
+    #ip link set dev "$wifidev" down
+    #ip a add 10.0.0.1/24 brd + dev "$wifidev"
+    #ip link set dev "$wifidev" up
+    ifconfig "$wifidev" down
     sleep 0.5
+    ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0 up
+    sleep 1
     # understand that DHCPCD is a client, here this  is to release dhcp client on wlan0
     dhcpcd -k "$wifidev" >/dev/null 2>&1
   
-   
+    # start dhcp server on wlan0
+    sleep 2
+    systemctl enable dnsmasq
+    systemctl start dnsmasq
+
     #hbaocr fix to start hostapd
     systemctl unmask hostapd
     systemctl enable hostapd
     systemctl start hostapd
 
-    # start dhcp server on wlan0
-    sleep 0.5
-    systemctl start dnsmasq
+
    
 }
 
