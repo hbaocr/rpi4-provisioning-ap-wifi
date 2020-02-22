@@ -1,22 +1,29 @@
 #!/bin/bash
-
-#https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
+# https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection
+# https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
 # kill all fake dns server to let the app can pull the node_modules package
-echo "kill all fake dns server to let the app can pull the node_modules package"
+echo "0. Alias nodejs sothat it can be found in  sudo mode"
+
+
+
+echo "1.Setup default wifi router to config by  modifying /etc/wpa_supplicant/wpa_supplicant.conf=="
+sudo cp -f ./config_ap/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+echo "2. Kill all fake dns server to let the app can pull the node_modules package"
 sudo killall dnsmasq
 sleep 2
 
 setup_path="$(pwd)"
 
 
-echo "==========SetupCaptivePortal Flashpage==========="
+echo "3. SetupCaptivePortal Flashpage==========="
 echo "copy CaptivePortal and jump to /home/pi/CaptivePortal to setup module"
 cp -rf CaptivePortal/ /home/pi/
 cd /home/pi/CaptivePortal
-npm install
+sudo npm install 
 
 
-echo "=========Go back to current setup path to continue setup==============="
+echo "4. Go back to current setup path to continue setup==============="
 echo $setup_path
 cd $setup_path
 # copy excuted file to target so that service can start
@@ -26,7 +33,7 @@ sudo chmod +x /usr/bin/captiveportal
 sudo cp ./config_ap/captiveportal.service /etc/systemd/system/captiveportal.service
 sudo systemctl enable captiveportal.service
 
-echo "==========start to setup wifi hotspot when no internet connection==========="
+echo "5.  start to setup wifi hotspot when no internet connection==========="
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install -y hostapd dnsmasq
@@ -69,10 +76,30 @@ sudo chmod +x /usr/bin/autohotspot
 sudo cp ./config_ap/autohotspot.service /etc/systemd/system/autohotspot.service
 sudo systemctl enable autohotspot.service
 
-echo "==========finish setup wifi hotspot when no internet connection==========="
+echo "==========Add to crontab to periodly check if no conected router on wlan0==> start ap==========="
 
+if grep -q "/usr/bin/autohotspot" /etc/crontab; then
+	echo "crontab already configured"
+else
+cat <<EOF >> /etc/crontab
+*/5 * * * * sudo /usr/bin/autohotspot >/dev/null 2>&1
+EOF
+fi
+
+echo "==========finish setup wifi hotspot when no internet connection==========="
 #sudo iptables -t nat -A PREROUTING -d 0/0 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.1:80
 
+#Disable Cron Timer
+#If you no longer need the timer running edit the cron with
+
+#  crontab -e
+
+#  and put a # infront so it is now
+
+#  #*/5 * * * * sudo /usr/bin/autohotspot
+
+# The script will now only work at boot up or if you manually run the autohotspot script with the command
+# sudo /usr/bin/autohotspot
 
 
 
