@@ -66,6 +66,7 @@ app.post('/scan_wifi', function (req, res) {
 app.get('*', function (req, res) {
   let full_url = req.protocol + '://' + req.get('host') + req.originalUrl;
   console.log(full_url)
-  res.redirect(301, '/');
+  //res.redirect(301, '/');//permanent redirect
+  res.redirect(302, '/');//  temporary redirect
 });
 
