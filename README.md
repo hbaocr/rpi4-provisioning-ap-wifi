@@ -3,8 +3,7 @@
 ## 1. Introduction
 
 
-* The  project is inspired of prj on [link](https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection
-).  I modified to support  auto wifi captiveportal.  
+* The  project is inspired of prj on [link](https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection).  I modified to support  auto wifi captiveportal.  
 * When power on RPI, if  their is no wifi connection, the wifi AP will  automatically run.( these ssid and password can be modified in hostapd.conf)
     * SSID : RPIWifiConfig
     * password : 1234567890
@@ -60,3 +59,7 @@ This will setup 3 services:
 
 
 
+## 4. Reference link
+* [https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection](https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection)
+* [https://www.shellvoide.com/wifi/how-to-setup-captive-portal-login-with-rogue-ap-nginx/](https://www.shellvoide.com/wifi/how-to-setup-captive-portal-login-with-rogue-ap-nginx/)
+* [https://socifi-doc.atlassian.net/wiki/spaces/SC/pages/94371841/DNS+Fix+to+keep+Android+Splash+Page+and+the+Captive+Portal+Notification+active](https://socifi-doc.atlassian.net/wiki/spaces/SC/pages/94371841/DNS+Fix+to+keep+Android+Splash+Page+and+the+Captive+Portal+Notification+active)
