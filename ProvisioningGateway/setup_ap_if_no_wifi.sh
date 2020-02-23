@@ -76,15 +76,15 @@ sudo chmod +x /usr/bin/autohotspot
 sudo cp ./config_ap/autohotspot.service /etc/systemd/system/autohotspot.service
 sudo systemctl enable autohotspot.service
 
-echo "==========Add to crontab to periodly check if no conected router on wlan0==> start ap==========="
+#echo "==========Add to crontab to periodly check if no conected router on wlan0==> start ap==========="
 
-if grep -q "/usr/bin/autohotspot" /etc/crontab; then
-	echo "crontab already configured"
-else
-cat <<EOF >> /etc/crontab
-*/5 * * * * sudo /usr/bin/autohotspot >/dev/null 2>&1
-EOF
-fi
+#if grep -q "/usr/bin/autohotspot" /etc/crontab; then
+#	echo "crontab already configured"
+#else
+#cat <<EOF >> /etc/crontab
+#*/5 * * * * sudo /usr/bin/autohotspot >/dev/null 2>&1
+#EOF
+#fi
 
 echo "==========finish setup wifi hotspot when no internet connection==========="
 #sudo iptables -t nat -A PREROUTING -d 0/0 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.1:80
