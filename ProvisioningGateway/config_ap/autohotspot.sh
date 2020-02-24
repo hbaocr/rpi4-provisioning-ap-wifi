@@ -43,8 +43,11 @@ setStaticIP(){
                 do
                     echo "Try config IP 10.0.0.1 on AP interface at  $x times"
                     x=$(( $x + 1 ))
-                    sudo  ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0
-                    sleep 10
+                     #sudo  ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0
+                     sudo ifconfig "$wifidev" down
+                     sleep 0.5
+                     sudo ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0 up
+                     sleep 10
                      if [ $x -gt 20]; then
                             echo "can not setup static ip 10.0.0.1 on AP gateway "
                             break
@@ -56,36 +59,27 @@ setStaticIP(){
 createAdHocNetwork()
 {
     echo "Creating Hotspot"
-    
+    # sudo rfkill unblock 0
     # understand that DHCPCD is a client, here this  is to release dhcp client on wlan0
     dhcpcd -k "$wifidev" >/dev/null 2>&1
-    # stop dhcp client
-    sudo systemctl stop dhcpcd
-    sleep 2
-    #ip link set dev "$wifidev" down
-    #ip a add 10.0.0.1/24 brd + dev "$wifidev"
-    #ip link set dev "$wifidev" up
-    ifconfig "$wifidev" down
-    sleep 0.5
-    
-    sudo ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0 up
     sleep 1
+    # stop dhcp client
+    sudo systemctl stop  dhcpcd.service
+    sudo killall dhcpcd
+    sudo killall dnsmasq
+    # 10.0.0.1/24
+    setStaticIP
 
-    
     # start dhcp server on wlan0
-    sleep 2
     systemctl enable dnsmasq
     systemctl start dnsmasq
-
+    sleep 5
     #hbaocr fix to start hostapd
     systemctl unmask hostapd
     systemctl enable hostapd
     systemctl start hostapd
-    
     #make  sure that have the valid IP
-    setStaticIP
-
-   
+    #setStaticIP
 }
 
 KillHotspot()

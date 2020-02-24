@@ -34,13 +34,14 @@ sudo cp ./config_ap/captiveportal.service /etc/systemd/system/captiveportal.serv
 sudo systemctl enable captiveportal.service
 
 echo "5.  start to setup wifi hotspot when no internet connection==========="
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install -y hostapd dnsmasq
+#sudo apt-get update
+#sudo apt-get upgrade
+#sudo apt-get install -y hostapd dnsmasq
 #The installers will have set up the programme so they run when the pi is started. For this setup they only need to be started if the home router is not found. 
 #So automatic startup needs to be disabled and by default hostapd is masked so needs to be unmasked. This is done with the following commands:
+sudo killall hostapd
+sudo killall  dnsmasq
 sudo systemctl unmask hostapd
-
 sudo systemctl disable hostapd
 sudo systemctl disable dnsmasq
 
@@ -53,12 +54,12 @@ sudo mv /etc/default/hostapd /etc/default/hostapd.org
 sudo cp ./config_ap/hostapd /etc/default/hostapd
 
 # Backup the interfaces
-sudo cp /etc/network/interfaces /etc/network/interfaces-backup
+sudo cp -f /etc/network/interfaces /etc/network/interfaces-backup
 
 #Backup  and add  nohook wpa_supplicant
 # dhcpcd is dhcp client. At first release DHCPclient from wlan0 ( see in autohotspotscript.sh)
-sudo cp /etc/dhcpcd.conf /etc/dhcpcd.conf.org
-sudo cp ./config_ap/dhcpcd.conf /etc/dhcpcd.conf
+sudo cp -f /etc/dhcpcd.conf /etc/dhcpcd.conf.org
+sudo cp -f ./config_ap/dhcpcd.conf /etc/dhcpcd.conf
 
 #DNSmasq configuration
 #Next dnsmasq needs to be configured to allow the Rpi to act as a router 
@@ -69,13 +70,20 @@ sudo cp -f ./config_ap/dnsmasq.conf /etc/dnsmasq.conf
 # Creating the autohotspot script (The service will start from this point at startup)
 # THis script will check if there are no internet ==>turn on wifi ap
 # sudo chmod +x ./config_ap/autohotspot.sh
-sudo cp ./config_ap/autohotspot.sh /usr/bin/autohotspot
+sudo cp -f ./config_ap/autohotspot.sh /usr/bin/autohotspot
 sudo chmod +x /usr/bin/autohotspot
 
 #Next we have to create a service which will run the autohotspot script when the Raspberry Pi starts up
-sudo cp ./config_ap/autohotspot.service /etc/systemd/system/autohotspot.service
+sudo cp -f ./config_ap/autohotspot.service /etc/systemd/system/autohotspot.service
 sudo systemctl enable autohotspot.service
 
+#Setup service : 10 seconds periodly check if ip=169.254.x.x ( no internet) ==> then set 10.0.0.1
+#echo "Setup service : 10 seconds periodly check if ip=169.254.x.x ( no internet) ==> then set 10.0.0.1"
+#sudo cp -f ./config_ap/CheckSetValidApIp.sh /usr/bin/CheckSetValidApIp
+#sudo chmod +x /usr/bin/CheckSetValidApIp
+
+#sudo cp -f ./config_ap/checksetvalidapip.service /etc/systemd/system/checksetvalidapip.service
+#sudo systemctl enable checksetvalidapip.service
 #echo "==========Add to crontab to periodly check if no conected router on wlan0==> start ap==========="
 
 #if grep -q "/usr/bin/autohotspot" /etc/crontab; then
