@@ -32,6 +32,27 @@ mac=()
 
 ssidsmac=("${ssids[@]}" "${mac[@]}") #combines ssid and MAC for checking
 
+setStaticIP(){
+        if ifconfig "$wifidev"  | grep  "inet 10.0.0.1"
+        then
+                echo "already have config AP IP 10.0.0.1"
+        else
+                echo "no config --> Try to set"
+                x=1
+                while ! ifconfig "$wifidev"  | grep  "inet 10.0.0.1" 
+                do
+                    echo "Try config IP 10.0.0.1 on AP interface at  $x times"
+                    x=$(( $x + 1 ))
+                    sudo  ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0
+                    sleep 10
+                     if [ $x -gt 20]; then
+                            echo "can not setup static ip 10.0.0.1 on AP gateway "
+                            break
+                     fi
+                done
+        fi
+}
+
 createAdHocNetwork()
 {
     echo "Creating Hotspot"
@@ -62,8 +83,7 @@ createAdHocNetwork()
     systemctl start hostapd
     
     #make  sure that have the valid IP
-    sleep 10
-    sudo  ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0 up
+    setStaticIP
 
    
 }
