@@ -11,6 +11,15 @@
 
 
 ## 2. Requisition software
+
+* Setup wifi country code
+
+    ```
+    sudo raspi-config
+    #------>4. Location Options
+    #-------------->I4 Change Wi-fi Country
+    #---------------------> US United States
+    ```
     
 * Libs and software packages
 
@@ -28,7 +37,9 @@
     source ~/.bashrc
     
     nvm install v12
-
+    # The  sudo only recognize the PATH  in secure_path in file in /etc/sudoers
+    # To see more details : run cmd :  
+    # sudo visudo
     # alias node and npm to  /usr/bin sothat thay can be found  and run in sudo mode
     sudo ln -s "$(which node)" /usr/bin/node
     sudo ln -s "$(which node)" /usr/lib/node
