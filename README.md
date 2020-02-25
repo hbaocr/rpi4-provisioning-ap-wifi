@@ -25,7 +25,18 @@
 
     ```sh
     sudo apt-get update
-    sudo apt-get install -y python curl git  build-essential nano hostapd dnsmasq
+    sudo apt-get upgrade
+    sudo apt-get install -y python curl git  build-essential tmux  nano hostapd dnsmasq
+
+    # don't  let it done  auto
+    # stop  current running instance
+    sudo systemctl stop dnsmasq.service
+    # disable restart service
+    sudo systemctl disable dnsmasq.service 
+
+    sudo systemctl stop hostapd
+    sudo systemctl unmask hostapd
+    sudo systemctl disable hostapd
     ```
 
 * NodeJS v12:

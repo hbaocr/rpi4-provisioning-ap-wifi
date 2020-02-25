@@ -47,8 +47,8 @@ setStaticIP(){
                      sudo ifconfig "$wifidev" down
                      sleep 0.5
                      sudo ifconfig "$wifidev" 10.0.0.1 netmask 255.255.255.0 up
-                     sleep 10
-                     if [ $x -gt 20]; then
+                     sleep 5
+                     if [ $x -gt 3]; then
                             echo "can not setup static ip 10.0.0.1 on AP gateway "
                             break
                      fi

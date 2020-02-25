@@ -6,6 +6,6 @@ After=multi-user.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/autohotspot
+ExecStart=/usr/bin/autohotspot.sh
 [Install]
 WantedBy=multi-user.target
