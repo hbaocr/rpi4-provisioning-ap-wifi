@@ -83,7 +83,15 @@ Boot process:
     *  Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in `./config_ap/dnsmasq.conf`
 * Start flashpage nodejs webserver with sudo to listen  all and create captive Portal the  webserver src  in  `CaptivePortal`
     
-
+After  running setup  you can have your own AP in next reboot. Or if  you want  to  bring it up now to test:
+```sh
+sudo /usr/bin/autohotspot.sh
+```
+or
+```
+cd bin
+sudo ./check_connect_then_start_soft_ap
+```
 
 ## 4. Reference link
 * [https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection](https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection)
