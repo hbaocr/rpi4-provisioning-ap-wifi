@@ -3,7 +3,7 @@
 ## 1. Introduction
 
 
-* When power on RPI, if  their is no wifi connection, the wifi AP will  automatically run.( these ssid and password can be modified in hostapd.conf)
+* When power on RPI, if  their is no wifi connection, the wifi AP will  automatically run.( these ssid and password can be modified in `./config_ap/hostapd.conf`)
     * SSID : RPIWifiConfig
     * password : 1234567890
 * When connecting to AP the setup page  will automatically  show off (only test on iphone  and Ipad and some android phone). By using  this page  you can configure to  connect  to your  own AP.
@@ -76,12 +76,13 @@ This will setup 3 services:
     * This bind on all interface of  RPI (  wlan0 and eth0)  at port 80
     * Redirect all unhandle uri to root url "/"
     * Only support http (  https may support in future)  
-* Boot process:
-    * 1. `./bin/check_connect_then_start_soft_ap.sh` :  Check wifi in  90 sec, if no wifi connection  then run  `./bin/start_ap_fork.sh`
-        * 1.1. Start hostapd  app with  config in ./config_ap/hostapd.conf
-        * 1.2. Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in ./config_ap/dnsmasq.conf
 
-     * 1. Start flashpage nodejs webserver with sudo to listen  all and create captive Portal. 
+Boot process:
+    * 1. `./bin/check_connect_then_start_soft_ap.sh` :  Check wifi in  90 sec, if no wifi connection  then run  `./bin/start_ap_fork.sh`
+        * 1.1. Start hostapd  app with  config in `./config_ap/hostapd.conf`
+        * 1.2. Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in `./config_ap/dnsmasq.conf`
+
+     * 2. Start flashpage nodejs webserver with sudo to listen  all and create captive Portal. 
 
 
 ## 4. Reference link
