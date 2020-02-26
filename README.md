@@ -78,11 +78,11 @@ This will setup 3 services:
     * Only support http (  https may support in future)  
 
 Boot process:
-    * `./bin/check_connect_then_start_soft_ap.sh` :  Check wifi in  90 sec, if no wifi connection  then run  `./bin/start_ap_fork.sh`
-        * 1.1. Start hostapd  app with  config in `./config_ap/hostapd.conf`
-        * 1.2. Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in `./config_ap/dnsmasq.conf`
-
-     * Start flashpage nodejs webserver with sudo to listen  all and create captive Portal. 
+* `./bin/check_connect_then_start_soft_ap.sh` :  Check wifi in  90 sec, if no wifi connection  then run  `./bin/start_ap_fork.sh`
+    *  Start hostapd  app with  config in `./config_ap/hostapd.conf`
+    *  Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in `./config_ap/dnsmasq.conf`
+* Start flashpage nodejs webserver with sudo to listen  all and create captive Portal the  webserver src  in  `CaptivePortal`
+    
 
 
 ## 4. Reference link
