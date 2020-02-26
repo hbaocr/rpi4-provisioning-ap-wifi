@@ -65,7 +65,17 @@ chmod +x  setup.sh
 sudo ./setup.sh 
 ```
 
-This will setup 3 services:
+After  running setup  you can have your own AP in next reboot. Or if  you want  to  bring it up now to test:
+```sh
+sudo /usr/bin/autohotspot.sh
+```
+or
+```
+cd bin
+sudo ./check_connect_then_start_soft_ap
+```
+
+The more details  about setup, this will bring up  3 service:
 * dnsmasg:  
     * DHCP server for  wifi AP o wlan0    
     * Fake DNS server  which  ressolve all the DNS queries  from connected device of  this AP  to 10.0.0.1, where  the  nodejs web captiveportal listen on port  10.0.0.1:80 
@@ -83,15 +93,7 @@ Boot process:
     *  Wait 60 sec then start fake dns serser  and dhcpserver on  `wlan0`by running `dnsmasq`  with config in `./config_ap/dnsmasq.conf`
 * Start flashpage nodejs webserver with sudo to listen  all and create captive Portal the  webserver src  in  `CaptivePortal`
     
-After  running setup  you can have your own AP in next reboot. Or if  you want  to  bring it up now to test:
-```sh
-sudo /usr/bin/autohotspot.sh
-```
-or
-```
-cd bin
-sudo ./check_connect_then_start_soft_ap
-```
+
 
 ## 4. Reference link
 * [https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection](https://www.raspberryconnect.com/projects/65-raspberrypi-hotspot-accesspoints/158-raspberry-pi-auto-wifi-hotspot-switch-direct-connection)
